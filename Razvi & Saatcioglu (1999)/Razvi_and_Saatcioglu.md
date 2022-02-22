@@ -61,8 +61,17 @@ where,
 <br />
 <img src="https://latex.codecogs.com/svg.image?q" title="q" /> is number of tie legs that cross side of core concrete for which average lateral pressure <img src="https://latex.codecogs.com/svg.image?f_{l}" title="f_{l}" /> is being computed
 <br />
-
-
+<img src="https://latex.codecogs.com/svg.image?E_{s}" title="E_{s}" /> is modulus of elasticity of plain concrete
+<br />
+<img src="https://latex.codecogs.com/svg.image?\rho_{c}" title="\rho_{c}" /> is total transverse steel area in two orthogonal directions divided by corresponding concrete area
+<br />
+<img src="https://latex.codecogs.com/svg.image?f_{yt}" title="f_{yt}" /> is yield strength of transverse reinforcement
+<br />
+<img src="https://latex.codecogs.com/svg.image?m" title="m" /> is number of tie legs in y-direction
+<br />
+<img src="https://latex.codecogs.com/svg.image?n" title="n" /> is number of tie legs in x-direction
+<br />
+ 
 A MATLAB script have been develop to plot a confined and unconfined stres-strain curve for the below cross-section
 
 ## Reference
