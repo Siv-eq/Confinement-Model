@@ -153,23 +153,136 @@ where <img src="https://latex.codecogs.com/svg.image?\inline&space;f_{c}^{\prime
 
 ### Input Parameters
 
+<p align="center">
+  <img width="400" src="https://github.com/Siv-eq/Confinement-Model/blob/main/Razvi%20%26%20Saatcioglu%20(1999)/Example_cross_section.jpg">
+</p>
+
 | | | | 
 | --- | --- | --- |
 | Clear Cover of Concrete | = | 25 mm |
 | Diameter of Stirrups/Ties | = | 8 mm |
 | Diameter of longittudinal reinforcement | = | 16 mm |
-| Width of cross-section along x-direction  ( <img src="https://latex.codecogs.com/svg.image?b_{c&space;x}" title="b_{c x}" /> ) | = | 200 mm |
-| Width of cross-section along y-direction  ( <img src="https://latex.codecogs.com/svg.image?b_{c&space;y}" title="b_{c y}" /> ) | = | 400 mm |
+| Width of cross-section along x-direction  ( <img src="https://latex.codecogs.com/svg.image?b_{c&space;x}" title="b_{c x}" /> ) | = | 400 mm |
+| Width of cross-section along y-direction  ( <img src="https://latex.codecogs.com/svg.image?b_{c&space;y}" title="b_{c y}" /> ) | = | 200 mm |
 | Spacing of transverse reinforcement  ( <img src="https://latex.codecogs.com/svg.image?s" title="s" /> ) | = | 75 mm |
 | Yield strangth of transverse reinforcement  ( <img src="https://latex.codecogs.com/svg.image?f_{y&space;t}" title="f_{y t}" /> ) | = | 500 MPa |
 | Cylindrical compressive strength of concrete  ( <img src="https://latex.codecogs.com/svg.image?\inline&space;f_{c}^{\prime}" title="\inline f_{c}^{\prime}" /> ) | = | 30 MPa |
 | Modulus of elasticity of transverse steel ( <img src="https://latex.codecogs.com/svg.image?\inline&space;E_{s}" title="\inline E_{s}" /> ) | = | 200000 MPa |
 | Angle between leg of transverse reinforcement and core side crossed by same leg ( <img src="https://latex.codecogs.com/svg.image?\inline&space;\alpha&space;" title="\inline \alpha " /> ) | = | 90 deg |
-| number of tie legs that cross side of core concrete for which average lateral pressure perpendicular to x-direction (<img src="https://latex.codecogs.com/svg.image?\inline&space;q_{x}" title="\inline q_{x}" />) | = | 2 |
-| number of tie legs that cross side of core concrete for which average lateral pressure perpendicular to y-direction (<img src="https://latex.codecogs.com/svg.image?\inline&space;q_{y}" title="\inline q_{y}" />) | = | 3 |
+| Number of tie legs that cross side of core concrete for which average lateral pressure perpendicular to x-direction (<img src="https://latex.codecogs.com/svg.image?\inline&space;q_{x}" title="\inline q_{x}" />) | = | 3 |
+| Number of tie legs that cross side of core concrete for which average lateral pressure perpendicular to y-direction (<img src="https://latex.codecogs.com/svg.image?\inline&space;q_{y}" title="\inline q_{y}" />) | = | 2 |
 
 
-### A MATLAB script have been develop to plot a confined and unconfined stres-strain curve for the below cross-section
+### A MATLAB script have been develop to plot a confined and unconfined stres-strain curve for the below cross-section [(razvi_and_saatcioglu_1999.m)](https://github.com/Siv-eq/Confinement-Model/blob/main/Razvi%20%26%20Saatcioglu%20(1999)/razvi_and_saatcioglu_1999.m)
+
+```matlab
+clc
+clear all
+% Razvi and Saatcioglu Model for High strength concrete
+% Date 22 Feb 2022
+
+%Input Parameters required to plot Stress-Strain Curve as per Razvi and Saatcioglu (1999)
+B = input('Enter the width of cross-section along x-direction (in mm) = ');
+W = input('Enter the width of cross-section along y-direction (in mm) = ');
+cov = input('Enter the clear cover of concrete section (in mm) = ');
+ds = input('Enter the diameter of the stirrups (in mm) = ');
+dl = input('Enter the diameter of the longitudinal reinforcement (in mm) = ');
+s = input('Enter the Spacing of transverse reinforcement (in mm) = ');
+fyt = input('Enter the yield strength of transverse reinforcement (in MPa) = ');
+qx = input('Enter number of tie legs that cross side of core concrete perpendicular to x-direction = ');
+qy = input('Enter number of tie legs that cross side of core concrete perpendicular to y-direction = ');
+fc_prime = input('Cylindrical compressive strength of concrete (in MPa) = ');
+Es = input('Enter modulus of elasticity of transverse steel (in MPa) = ');
+
+%Calculation
+bcx=(B-cov-cov-ds); %(in mm) core dimension measured center-to-center of perimeter hoop in x-direction
+bcy=(W-cov-cov-ds); %(in mm) core dimension measured center-to-center of perimeter hoop in y-direction
+dbx=ds;
+dby=ds;
+slx=(bcx-ds-dl)/(qx-1); %(in mm) spacing of longitudinal reinforcement, laterally supported by cornet by same leg
+sly=(bcy-ds-dl)/(qy-1);
+alpha=90; %(in degrees) angle between leg of transverse reinforcement and core side crossed by same leg
+fco_prime=fc_prime;
+Asx=pi*dbx*dbx/4;
+Asy=pi*dby*dby/4;
+rho_c=((qx*Asx)+(qy*Asy))/(s*(bcx+bcy));
+k2x=min(1,(0.15*sqrt((bcx/s)*(bcx/slx))));
+k2y=min(1,(0.15*sqrt((bcy/s)*(bcy/sly))));
+fsx=min(fyt,(Es*(0.0025+(0.04*(k2x*rho_c/fco_prime)^(1/3)))));
+fsy=min(fyt,(Es*(0.0025+(0.04*(k2y*rho_c/fco_prime)^(1/3)))));
+flx=(qx*Asx*fsx*sind(alpha))/(s*bcx);
+fly=(qy*Asy*fsy*sind(alpha))/(s*bcy);
+flex=k2x*flx;
+fley=k2y*fly;
+fle=((flex*bcx)+(fley*bcy))/(bcx+bcy);
+k1=6.7*(fle^-0.17);
+fcc_prime=fco_prime+(k1*fle);
+k2=min(k2x,k2y);
+
+K=k1*fle/fco_prime;
+k3=min(1,(40/fco_prime));
+e01=0.0028-(0.0008*k3);
+e01_=0.0005*(fco_prime^0.4);
+e1=e01*(1+(5*k3*K));
+e085=e01+(0.0018*(k3^2));
+k4=max(1,(fyt/500));
+e85=(260*k3*rho_c*e1*(1+(0.5*k2*(k4-1))))+e085;
+e20=((e85*0.8)-(e1*0.65))/0.15;
+e020=((e085*0.8)-(e01*0.65))/0.15;
+
+Esec=fcc_prime/e1;
+Ec=max(Esec,(3320*sqrt(fc_prime))+6900);
+r=Ec/(Ec-Esec);
+ec=linspace(0,1.1*e20,1000);
+eco=linspace(0,e020,1000);
+fc=zeros(1);
+fco=zeros(1);
+ec1=zeros(1);
+eco1=zeros(1);
+for i=1:length(ec)
+    if ec(i)<=e1
+        fc(i)=(fcc_prime*ec(i)*r/e1)/(r-1+(ec(i)/e1)^r);
+        ec1(i)=ec(i);
+    elseif ec(i)<e20
+        fc(i)=((-0.15*fcc_prime)*(ec(i)-e1)/(e85-e1))+fcc_prime;
+        ec1(i)=ec(i);
+    elseif ec(i)>=e20
+        fc(i)=0.20*fcc_prime;
+        ec1(i)=ec(i);
+    end
+end
+plot(ec1,fc,'DisplayName','Confined');
+xlabel('Strain')
+ylabel('Stress (MPa)')
+hold on;
+%plot(e85,(0.85*fcc_prime),'o');
+%plot(e20,(0.20*fcc_prime),'o');
+%plot(e1,(fcc_prime),'o');
+for i=1:length(eco)
+    if eco(i)<=e01
+        fco(i)=(fco_prime*eco(i)*r/e01)/(r-1+(eco(i)/e01)^r);
+        eco1(i)=eco(i);
+    elseif and((eco(i)<e020),(eco(i)<0.0035))
+        fco(i)=((-0.15*fco_prime)*(eco(i)-e01)/(e085-e01))+fco_prime;
+        eco1(i)=eco(i);
+    end
+end
+plot(eco1,fco,'DisplayName','Unconfined');
+%plot(e01,(fco_prime),'o');
+%plot(e085,(0.85*fco_prime),'o');
+hold off
+legend
+```
+
+### Result
+
+<p align="center">
+  <img width="500" src="https://github.com/Siv-eq/Confinement-Model/blob/main/Razvi%20%26%20Saatcioglu%20(1999)/Confined_Stress_Strain_Curve.jpg">
+</p>
+
+![image](https://user-images.githubusercontent.com/86240528/155147819-10a2b58e-cc46-4bc1-a6be-244ba8649847.png)
+
+
 
 ## Reference
 <a id="1">[1]</a> 
