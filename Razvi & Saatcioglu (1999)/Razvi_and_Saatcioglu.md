@@ -153,9 +153,21 @@ where <img src="https://latex.codecogs.com/svg.image?\inline&space;f_{c}^{\prime
 
 ### Input Parameters
 
-| | | |
+| | | | 
 | --- | --- | --- |
-| Clear Cover of Concrete | = | 25 mm|
+| Clear Cover of Concrete | = | 25 mm |
+| Diameter of Stirrups/Ties | = | 8 mm |
+| Diameter of longittudinal reinforcement | = | 16 mm |
+| Width of cross-section along x-direction  ( <img src="https://latex.codecogs.com/svg.image?b_{c&space;x}" title="b_{c x}" /> ) | = | 200 mm |
+| Width of cross-section along y-direction  ( <img src="https://latex.codecogs.com/svg.image?b_{c&space;y}" title="b_{c y}" /> ) | = | 400 mm |
+| Spacing of transverse reinforcement  ( <img src="https://latex.codecogs.com/svg.image?s" title="s" /> ) | = | 75 mm |
+| Yield strangth of transverse reinforcement  ( <img src="https://latex.codecogs.com/svg.image?f_{y&space;t}" title="f_{y t}" /> ) | = | 500 MPa |
+| Cylindrical compressive strength of concrete  ( <img src="https://latex.codecogs.com/svg.image?\inline&space;f_{c}^{\prime}" title="\inline f_{c}^{\prime}" /> ) | = | 30 MPa |
+| Modulus of elasticity of transverse steel ( <img src="https://latex.codecogs.com/svg.image?\inline&space;E_{s}" title="\inline E_{s}" /> ) | = | 200000 MPa |
+| Angle between leg of transverse reinforcement and core side crossed by same leg ( <img src="https://latex.codecogs.com/svg.image?\inline&space;\alpha&space;" title="\inline \alpha " /> ) | = | 90 deg |
+| number of tie legs that cross side of core concrete for which average lateral pressure perpendicular to x-direction (<img src="https://latex.codecogs.com/svg.image?\inline&space;q_{x}" title="\inline q_{x}" />) | = | 2 |
+| number of tie legs that cross side of core concrete for which average lateral pressure perpendicular to y-direction (<img src="https://latex.codecogs.com/svg.image?\inline&space;q_{y}" title="\inline q_{y}" />) | = | 3 |
+
 
 ### A MATLAB script have been develop to plot a confined and unconfined stres-strain curve for the below cross-section
 
